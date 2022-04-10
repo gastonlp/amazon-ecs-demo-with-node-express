@@ -42,7 +42,7 @@ $ docker build -t sample-nodejs-app .
 # verify and get the image id
 $ docker images
 # run docker image
-$ docker run --name dockerized-node-app -p 80:3000 --init --rm sample-nodejs-app
+$ docker run --name dockerized-node-app -p 8080:3000 --init --rm sample-nodejs-app
 
 ```
 
