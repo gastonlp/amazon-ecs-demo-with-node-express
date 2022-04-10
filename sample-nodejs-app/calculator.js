@@ -35,8 +35,8 @@ app.post("/", function (req, res) {
   res.send(`<h2> the result is : ${calculator(num1, num2, operator)}</h2>` );
 });
 
-app.listen(3000, function () {
-  console.log("server started on port 3000");
+app.listen(80, function () {
+  console.log("server started on port 80");
 });
 
 function add(num1, num2) {
