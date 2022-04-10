@@ -62,22 +62,25 @@ In this part we will the image to a container registry - Amazon ECR in order to 
 - From EC2 Dashboard, click Actions and Modify IAM role under Security tab. 
 
 ```bash
+# Get current Region and AWS Account ID
+export REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | awk -F'"' '/"region"/ { print $4 }')
+export AWS_ACCOUNT_ID=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | awk -F'"' '/"accountId"/ { print $4 }') 
 # Authenticate to your default registry
 # update the region and aws_account_id on the below command
-$ aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.<region>.amazonaws.com
+aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
 
 # Once you receive 'Login Succeeded" , you can create your private repo on ECR
 # update the region on the below command
-$ aws ecr create-repository \
+aws ecr create-repository \
     --repository-name sample-nodejs-app \
     --image-scanning-configuration scanOnPush=true \
-    --region <region>
+    --region $REGION
 
 # tag and push your image
 # update the region and aws_account_id on the below command
-$ docker tag sample-nodejs-app:latest <aws_account_id>.dkr.ecr.<region>.amazonaws.com/sample-nodejs-app:latest
+docker tag sample-nodejs-app:latest $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/sample-nodejs-app:latest
 
-$ docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/sample-nodejs-app:latest
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/sample-nodejs-app:latest
 
 ```
 
